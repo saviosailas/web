@@ -1,82 +1,85 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>My Web Projects</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: auto;
-      padding: 2em;
-      background: #f9f9f9;
-    }
-    h1 {
-      text-align: center;
-    }
-    ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    li {
-      margin: 1em 0;
-    }
-    a {
-      text-decoration: none;
-      color: #0366d6;
-      font-size: 1.2em;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Web Projects</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: auto;
+            padding: 2em;
+            background: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin: 1em 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #0366d6;
+            font-size: 1.2em;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
+
 <body>
-  <h1>Welcome to My Projects</h1>
-  <p>Here are the web pages I've created:</p>
-  <ul id="projectList"></ul>
+    <h1>Welcome to My Projects</h1>
+    <p>Here are the web pages I've created:</p>
+    <ul id="projectList"></ul>
 
-  <script>
-    // ✅ Only update this array when you add a new project folder
-    // const projects = [
-    //   "project1",
-    //   "project2",
-    //   "css-effects",
-    //   // add more folders here
-    // ];
 
-    const user = "saviosailas";
-    const repo = "web";
-  
-    fetch(`https://api.github.com/repos/${user}/${repo}/contents/`)
-      .then(response => response.json())
-      .then(data => {
-        const folders = data.filter(item => item.type === "dir");
-        const list = document.getElementById("projectList");
-  
-        folders.forEach(folder => {
-          const li = document.createElement("li");
-          const link = document.createElement("a");
-          link.href = `${folder.name}/index.html`;  // Assumes each folder has an index.html
-          link.textContent = folder.name;
-          li.appendChild(link);
-          list.appendChild(li);
-        });
-      })
-      .catch(err => console.error("Failed to fetch repo content", err));
+    <script>
+        fetch('./projects.json')
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById("projectList");
+                data.forEach(project => {
+                    console.log("Project Name:", project.name);
+                    console.log("Description:", project.description);
+                    console.log("Link: ", project.link);
+                    const li = document.createElement("li");
+                    const link = document.createElement("a");
+                    const info = document.createElement("small");
+                    link.href = `${project.link}index.html`; // project.link will have trailing '/'
+                    link.textContent = project.name;
+                    info.textContent = project.description;
+                    li.appendChild(link);
+                    li.appendChild(document.createElement("br"));
+                    li.append(info);
+                    list.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error fetching JSON:', error));
+    </script>
 
-    const projectList = document.getElementById("projectList");
+    <hr>
+    <h3>CSS reference: <a href="https://cssreference.io/"> https://cssreference.io</a> </h3>
+    <h3> HTML reference: <a href="https://htmlreference.io/"> https://htmlreference.io</a> </h3>
+    <h3> HTML basic: <a href="https://marksheet.io/">https://marksheet.io/</a></h3>
+    <h3> Blog:
+        <a href="https://dev.to/zeeshanhshaheen/roadmap-to-learn-and-practice-html-css-javascript-in-6-weeks-27l4">
+            Roadmap to learn and practice HTML, CSS & JavaScript in 6 weeks
+        </a>
+    </h3>
 
-    projects.forEach((folder) => {
-      const li = document.createElement("li");
-      const link = document.createElement("a");
-      link.href = `${folder}/index.html`;
-      link.textContent = folder.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-      li.appendChild(link);
-      projectList.appendChild(li);
-    });
-  </script>
+
 </body>
+
 </html>
